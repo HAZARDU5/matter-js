@@ -1,0 +1,459 @@
+.content {
+    font-size: 1em;
+    color: #555;
+}
+
+.content.summary {
+    font-family: Georgia, 'Droid Serif', Times, 'Times New Roman', serif;
+    font-size: 0.9em;
+    border-bottom: 1px solid #ddd;
+    margin: 0 0 3em 0;
+    padding: 0 0 1.2em 0;
+    color: #888;
+    min-height: 5em;
+}
+
+.content.summary:before {
+    float: left;
+    margin: 0.5em 0.3em 1em 0;
+    content: 'Â§';
+    line-height: 0;
+    font-size: 4em;
+    color: #ddd;
+}
+
+.content.summary p {
+    margin: 0 0 0 3em;
+    font-style: italic;
+    font-size: 1.1em;
+    margin-left: 2em;
+}
+
+.content.summary.summary-single {
+    min-height: 0;
+    padding-bottom: 0.7em;
+}
+
+.content.summary.summary-single:before {
+    display: none;
+}
+
+.content.summary.summary-single p {
+    line-height: 1.6;
+    margin-left: 0;
+}
+
+.content p {
+    margin: 1.5em 0;
+    font-size: 0.95em;
+    line-height: 1.7;
+}
+
+.eot:after,
+.content p.last:after {
+    content: 'âˆŽ';
+    font-weight: normal;
+    font-style: normal;
+    color: #a4c7f3;
+    font-size: 1.15em;
+    margin: 0 0 0 0.4em;
+}
+
+.content h1,
+.content h2,
+.content h3,
+.content h4 {
+    font-family: Georgia, 'Droid Serif', Times, 'Times New Roman', serif;
+    margin: 3em 0 1em 0;
+    color: #000;
+}
+
+.content h1:first-child,
+.content h2:first-child,
+.content h3:first-child,
+.content h4:first-child {
+    margin-top: 0;
+}
+
+.content h1,
+.content .h1 {
+    font-size: 1.8em;
+}
+
+.content h2,
+.content .h2 {
+    font-size: 1.4em;
+}
+
+.content h3,
+.content .h3 {
+    font-size: 1.2em;
+}
+
+.content h4,
+.content .h4 {
+    font-size: 1.2em;
+}
+
+.content q {
+    font-style: italic;
+}
+
+.content q:before { content: 'â€œ'; }
+.content q:after { content: 'â€'; }
+
+.content strong,
+.content b {
+    font-weight: bold;
+    color: #555;
+}
+
+.content em,
+.content i {
+    font-style: italic;
+}
+
+.content small {
+    font-size: 0.8em;
+}
+
+.content ul, .content ol {
+    margin: 1.5em 0;
+    text-align: justify;
+    list-style: disc inside;
+    padding: 0 1.2em;
+    line-height: 1.5;
+}
+
+.content ol {
+    padding: 0 1.6em;
+}
+
+.content ul, .content ol {
+    list-style: none;
+    counter-reset: ol-counter;
+}
+
+.content li {
+    margin: 0.3em 0;
+    font-size: 0.95em;
+    line-height: 1.8;
+}
+
+.content ul.inline li,
+.content ol.inline li {
+    float: left;
+    margin-right: 3em;
+}
+
+.content ul li:before {
+    content: 'â€¢';
+    display: block;
+    position: relative;
+    max-width: 0;
+    max-height: 0;
+    left: -1.1em;
+    color: #6fa5e7;
+    font-size: 1.2em;
+    line-height: 1.4;
+}
+
+.content ol li:before {
+    content: counter(ol-counter) ".";
+    counter-increment: ol-counter;
+    display: block;
+    position: relative;
+    max-width: 0;
+    max-height: 0;
+    left: -1.6em;
+    top: -0.01em;
+    color: #6fa5e7;
+    font-size: 1em;
+}
+
+.content ol.split-counter.counter-reset {
+    counter-reset: split-counter;
+}
+
+.content ol.split-counter li:before {
+    content: counter(split-counter) ".";
+    counter-increment: split-counter;
+}
+
+.content .intro {
+    font-size: 1.1em;
+    margin: 1em 0 1.5em 0;
+    line-height: 1.75;
+    color: #444;
+}
+
+.content blockquote {
+    font-family: Georgia, 'Droid Serif', Times, 'Times New Roman', serif;
+    margin: 3em 5%;
+    padding: 0;
+}
+
+.content blockquote.fl, .content blockquote.fr {
+    margin: 0 2em 1em 3em;
+}
+
+.content blockquote p {
+    text-align: justify;
+    font-size: 1em;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+.content blockquote .big {
+    margin: 0 0 0 0.5em;
+    line-height: 1.5;
+    font-size: 1.2em;
+}
+
+.content blockquote .src {
+    text-align: right !important;
+    font-size: 0.8em;
+    font-style: normal;
+}
+
+.content blockquote .src b {
+    font-weight: bold;
+    font-style: normal;
+    text-transform: uppercase;
+}
+
+.content blockquote i {
+    margin: 0 0 0 0.3em;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.content figure {
+    margin: 4em 0;
+    overflow: auto;
+}
+
+.content figure.fr,
+.content figure.fl {
+    margin-top: 2em;
+    margin-bottom: 2em;
+    clear: both;
+}
+
+.content figure.fr {
+    margin-left: 3em;
+}
+
+.content figure.fl {
+    margin-right: 3em;
+}
+
+.content figure.fr.tight {
+    margin-left: 2.5em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.content figure.fl.tight {
+    margin-right: 3em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.content figure p {
+    font-size: 1.7em;
+    text-align: center;
+}
+
+.content figure .equation {
+    margin: 0;
+}
+
+.content .video-container {
+    position: relative;
+    padding-bottom: 36.7%;
+    height: 0;
+    overflow: hidden;
+    margin: 1em 0;
+}
+
+.content .video-container.fc {
+    left: -75% ;
+    margin-left: 100%;
+}
+
+.content .video-container iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.content .figure-image {
+    text-align: center;
+}
+
+.content .figure-image a:active {
+    position: static !important;
+    top: 0 !important;
+}
+
+/*
+.content .figure-image.top {
+    padding-top: 0.4em;
+    margin-bottom: 3em;
+}
+*/
+.content .figure-image img {
+    margin: 0;
+    max-width: 100%;
+}
+
+.content .figure-image.fc-outside img {
+    width: 100%;
+    max-height: inherit;
+}
+
+.content .figure-image.fc-outside.original-size img {
+    width: auto;
+}
+
+.content .figure-image.fl.fl-outside,
+.content .figure-image.fr.fr-outside,
+.content .figure-video.fl.fl-outside,
+.content .figure-video.fr.fr-outside {
+    max-width: 58% !important;
+}
+
+.content figcaption,
+.content .caption {
+    margin: 3em 0 0 0;
+    clear: both;
+    font-family: Georgia, 'Droid Serif', Times, 'Times New Roman', serif;
+    text-align: center;
+    font-size: 0.8em;
+    font-style: italic;
+    color: #777;
+}
+
+.content figcaption b,
+.content .caption b {
+    margin-right: 1em;
+    font-weight: bold;
+}
+
+.content code {
+    background: #ebebeb;
+    font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+    padding: 0.15em 0.4em;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.8em;
+}
+
+.content code a:hover {
+    text-decoration: none;
+}
+
+.content pre {
+    margin: 3em 0;
+    padding: 1.6em 3%;
+    background: #2a2a2a;
+    font-family: Consolas, monaco, monospace;
+    overflow: auto;
+    font-size: 0.9em;
+}
+
+.content pre code {
+    font-size: 0.95em;
+    font-family: Consolas, monaco, monospace;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    color: #ccc;
+}
+
+.content img {
+    border-radius: 2px;
+    max-width: 100%;
+    margin: 1em 0;
+}
+
+.content .citation-list {
+    list-style: none;
+    counter-reset: citation-counter;
+    margin: 0 6%;
+    padding: 0;
+    text-align: left;
+}
+
+.content .citation-list cite {
+    color: #777;
+}
+
+.content .citation-list i {
+    font-style: italic;
+}
+
+.content .citation-list li:before {
+    display: block;
+    position: relative;
+    content: "[" counter(citation-counter) "]";
+    counter-increment: citation-counter;
+    color: #aaa;
+    font-size: 0.9em;
+    margin: 0 0 0 -0.6em;
+    line-height: 1.7;
+}
+
+.content .crop {
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+    background: url(http://placehold.it/800x400) center no-repeat;
+    height: 400px;
+    margin: 2em 0;
+}
+
+.content .crop img {
+    float: left;
+}
+
+.content a.cite {
+    font-size: 0.75em;
+    text-decoration: none;
+    border-bottom: 1px dotted #6fa5e7;
+    position: relative;
+    line-height: 0;
+    top: -0.7em;
+    margin: 0 0.4em;
+}
+
+.content .note-title {
+    font-weight: bold;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    margin: 0 0.6em 0 0;
+}
+
+.content aside {
+    left: 100%;
+    width: 13em;
+    margin: 0 0 1em 4em;
+    float: right;
+}
+
+.content aside p {
+    font-size: 0.8em;
+    text-align: left;
+    margin: 0;
+}
+
+.content .image-view-link {
+    display: block;
+    border: 0;
+}
+
+.content sup {
+    font-size: 0.6em;
+    position: relative;
+    line-height: 1em;
+    top: -0.7em;
+}

@@ -1,0 +1,65 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins,
+kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, footer, header, hgroup,
+menu, nav, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+iframe, object, embed { width: 100%; }
+img  { image-rendering: optimizeQuality; -ms-interpolation-mode: bicubic; }
+
+.ir { display: block; text-indent: -999em; overflow: hidden; background-repeat: no-repeat; text-align: left; }
+
+.cf { zoom: 1; }
+.cf:before, .cf:after { content: "\0020"; display: block; height: 0; overflow: hidden; }
+.cf:after { clear: both; }
+
+.fl, .fr { max-width: 45% !important; }
+.fl { float: left !important; }
+.fr { float: right !important; }
+.fr.fr-outside {
+    margin-right: -2% !important;
+}
+.fl.fl-outside {
+    margin-left: -2% !important;
+}
+.fc-outside {
+    margin-left: -2% !important;
+    width: 104% !important;
+    clear: both !important;
+}
+
+.ar { text-align: right; }
+.al { text-align: left; }
+.ac { text-align: center; }
+
+.first { margin-left: 0 !important; }
+.last { margin-right: 0 !important; }
+.top { margin-top: 0 !important; }
+.bottom { margin-bottom: 0 !important; }
+.scale { max-width: 100%; }
+
+.clear {
+    clear: both !important;
+}
