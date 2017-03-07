@@ -10,7 +10,8 @@
         Composites = Matter.Composites,
         Common = Matter.Common,
         Constraint = Matter.Constraint,
-        MouseConstraint = Matter.MouseConstraint;
+        MouseConstraint = Matter.MouseConstraint,
+        Events = Matter.Events;
 
     var Demo = {};
 
@@ -19,46 +20,73 @@
         _sceneWidth,
         _sceneHeight;
 
+    var _stack;
+    var _bodiesToBeMovedNextFrame = [];
+
     Demo.init = function() {
         var canvasContainer = document.getElementById('canvas-container'),
             demoStart = document.getElementById('demo-start');
 
-        demoStart.addEventListener('click', function() {
-            demoStart.style.display = 'none';
-
-            _engine = Engine.create(canvasContainer, {
-                render: {
-                    options: {
-                        wireframes: true,
-                        showAngleIndicator: true,
-                        showDebug: true
-                    }
-                }
-            });
-
-            Demo.fullscreen();
-
-            setTimeout(function() {
-                Engine.run(_engine);
-                Demo.updateScene();
-            }, 800);
-        });
 
 
+        demoStart.addEventListener('click', Demo.start);
+
+
+        if (window.DeviceMotionEvent == undefined) {
+            //No accelerometer is present. Use buttons.
+            alert("no accelerometer");
+        }
+        else {
+            //alert("accelerometer found");
+            window.addEventListener("devicemotion", Demo.applyForces, true);
+        }
 
         window.addEventListener('deviceorientation', Demo.updateGravity, true);
         window.addEventListener('touchstart', Demo.fullscreen);
         window.addEventListener('orientationchange', function() {
             Demo.updateGravity();
             setTimeout(function() {
-                Engine.run(_engine);
                 Demo.updateScene();
             }, 800);
             Demo.fullscreen();
         }, false);
+
+
+
+        //Demo.start();
     };
 
     window.addEventListener('load', Demo.init);
+
+    Demo.start = function() {
+
+        var canvasContainer = document.getElementById('canvas-container'),
+            demoStart = document.getElementById('demo-start');
+
+        demoStart.style.display = 'none';
+
+        _engine = Engine.create(canvasContainer, {
+            render: {
+                options: {
+                    wireframes: true,
+                    showAngleIndicator: true,
+                    showDebug: true
+                }
+            }
+        });
+
+
+
+        Demo.fullscreen();
+
+        setTimeout(function() {
+            Engine.run(_engine);
+            Events.on(_engine, 'beforeUpdate', Demo.pushCollisions);
+            Events.on(_engine, 'collisionStart', Demo.onCollisionStart);
+            Demo.updateScene();
+        }, 800);
+
+    };
 
     Demo.mixed = function() {
         var _world = _engine.world;
@@ -67,7 +95,7 @@
 
         World.add(_world, MouseConstraint.create(_engine));
 
-        var stack = Composites.stack(20, 20, 10, 5, 0, 0, function(x, y, column, row) {
+        _stack = Composites.stack(20, 20, 10, 5, 0, 0, function(x, y, column, row) {
             switch (Math.round(Common.random(0, 1))) {
 
                 case 0:
@@ -83,7 +111,7 @@
             }
         });
 
-        World.add(_world, stack);
+        World.add(_world, _stack);
     };
 
     Demo.updateScene = function() {
@@ -113,8 +141,6 @@
         var orientation = typeof window.orientation !== 'undefined' ? window.orientation : 0,
             gravity = _engine.world.gravity;
 
-        //alert('Orientation change: '+orientation);
-
         if (orientation === 0) {
             gravity.x = Common.clamp(event.gamma, -90, 90) / 90;
             gravity.y = Common.clamp(event.beta, -90, 90) / 90;
@@ -130,7 +156,25 @@
         }
     };
 
+    Demo.applyForces = function (event) {
+        var x = event.accelerationIncludingGravity.x;
+        var y = event.accelerationIncludingGravity.y;
+
+        if(_stack){
+            for (var i = 0; i < _stack.length; i++){
+                var theBody = _stack[i];
+                Body.applyForce(theBody, { x: 0, y: 0 }, {x: x, y: y});
+            }
+
+        }
+
+
+    };
+
     Demo.fullscreen = function(){
+        if (!_engine)
+            return;
+
         var _fullscreenElement = _engine.render.canvas;
 
         if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement) {
@@ -151,7 +195,7 @@
 
             //});
         }else{
-            setTimeout(function(){
+            /*setTimeout(function(){
                 screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
 
                 // The target of the event is always the document,
@@ -163,10 +207,34 @@
                 } else {
                     //alert('Lock failed');
                 }
-            },1000);
+            },1000);*/
         }
 
 
+    };
+
+    Demo.pushCollisions = function(event) {
+
+        for (var i = 0; i < _bodiesToBeMovedNextFrame.length; i++){
+            var theBody = _bodiesToBeMovedNextFrame[i];
+            Body.applyForce(theBody, { x: 0, y: 0 }, {x: 0.0001, y: 0.0001});
+        }
+
+        _bodiesToBeMovedNextFrame = [];
+    };
+
+    Demo.onCollisionStart = function(event) {
+        var pairs = event.pairs;
+        for (var i = 0; i < pairs.length; i++) {
+            var pair = pairs[i];
+            if (pair.bodyA.label !== 'world-bounds'){
+                _bodiesToBeMovedNextFrame.push(pair.bodyA);
+            }
+
+            if(pair.bodyB.label !== 'world-bounds'){
+                _bodiesToBeMovedNextFrame.push(pair.bodyB);
+            }
+        }
     };
 
     Demo.reset = function() {
@@ -175,11 +243,16 @@
         World.clear(_world);
         Engine.clear(_engine);
 
+        _world.gravity.scale = 0.01;
+
         var offset = 5;
-        World.addBody(_world, Bodies.rectangle(_sceneWidth * 0.5, -offset, _sceneWidth + 0.5, 50.5, { isStatic: true }));
-        World.addBody(_world, Bodies.rectangle(_sceneWidth * 0.5, _sceneHeight + offset, _sceneWidth + 0.5, 50.5, { isStatic: true }));
-        World.addBody(_world, Bodies.rectangle(_sceneWidth + offset, _sceneHeight * 0.5, 50.5, _sceneHeight + 0.5, { isStatic: true }));
-        World.addBody(_world, Bodies.rectangle(-offset, _sceneHeight * 0.5, 50.5, _sceneHeight + 0.5, { isStatic: true }));
+        World.addBody(_world, Bodies.rectangle(_sceneWidth * 0.5, -offset, _sceneWidth + 0.5, 50.5, { isStatic: true, label: "world-bounds" }));
+        World.addBody(_world, Bodies.rectangle(_sceneWidth * 0.5, _sceneHeight + offset, _sceneWidth + 0.5, 50.5, { isStatic: true, label: "world-bounds" }));
+        World.addBody(_world, Bodies.rectangle(_sceneWidth + offset, _sceneHeight * 0.5, 50.5, _sceneHeight + 0.5, { isStatic: true, label: "world-bounds" }));
+        World.addBody(_world, Bodies.rectangle(-offset, _sceneHeight * 0.5, 50.5, _sceneHeight + 0.5, { isStatic: true, label: "world-bounds" }));
+
+
+
     };
 
 })();
