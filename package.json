@@ -52,9 +52,12 @@
     "yuidocjs": "^0.10.2"
   },
   "scripts": {
-    "test": "gulp build:dev && gulp lint"
+    "test": "gulp build:dev && gulp lint",
+    "start": "serve ./"
   },
-  "dependencies": {},
+  "dependencies": {
+    "serve": "^4.0.1"
+  },
   "files": [
     "src",
     "build",
