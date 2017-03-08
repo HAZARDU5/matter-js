@@ -26,10 +26,11 @@
 
     Demo.init = function() {
         var canvasContainer = document.getElementById('canvas-container'),
-            demoStart = document.getElementById('demo-start');
+            demoStart = document.getElementById('demo-start'),
+            body = document.body;
 
         _sound = new Howl({
-            src: ['ogg/rattle.ogg', 'ogg/rattle.mp3'],
+            src: ['ogg/rattle.ogg', 'mp3/rattle.mp3'],
             sprite: {
                 clink1: [0, 33],
                 clink2: [45, 125],
@@ -40,7 +41,8 @@
         });
 
         demoStart.addEventListener('click', Demo.start);
-
+        canvasContainer.setAttribute('style','position:fixed;top:0;left:0;right:0;down:0;display:block;');
+        body.setAttribute('style','margin:0;padding:0;');
 
         if (window.DeviceMotionEvent == undefined) {
             //No accelerometer is present. Use buttons.
