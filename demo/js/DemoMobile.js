@@ -22,12 +22,22 @@
 
     var _stack;
     var _bodiesToBeMovedNextFrame = [];
+    var _sound;
 
     Demo.init = function() {
         var canvasContainer = document.getElementById('canvas-container'),
             demoStart = document.getElementById('demo-start');
 
-
+        _sound = new Howl({
+            src: ['ogg/rattle.ogg', 'ogg/rattle.mp3'],
+            sprite: {
+                clink1: [0, 33],
+                clink2: [45, 125],
+                clink3: [125, 154],
+                clink4: [162, 210],
+                bigClink: [212, 308]
+            }
+        });
 
         demoStart.addEventListener('click', Demo.start);
 
@@ -50,10 +60,6 @@
             }, 800);
             Demo.fullscreen();
         }, false);
-
-
-
-        //Demo.start();
     };
 
     window.addEventListener('load', Demo.init);
@@ -95,8 +101,8 @@
 
         World.add(_world, MouseConstraint.create(_engine));
 
-        _stack = Composites.stack(20, 20, 10, 5, 0, 0, function(x, y, column, row) {
-            switch (Math.round(Common.random(0, 1))) {
+        _stack = Composites.stack(0, 0, 2, 2, 0, 0, function(x, y, column, row) {
+            /*switch (Math.round(Common.random(0, 1))) {
 
                 case 0:
                     if (Math.random() < 0.8) {
@@ -108,7 +114,40 @@
                 case 1:
                     return Bodies.polygon(x, y, Math.round(Common.random(4, 6)), Common.random(20, 40), { friction: 0.01, restitution: 0.4 });
 
-            }
+            }*/
+
+            /*
+             FRICTIONSTATIC
+             A Number that defines the static friction of the body (in the Coulomb friction model). A value of 0 means
+             the body will never 'stick' when it is nearly stationary and only dynamic friction is used. The higher the
+             value (e.g. 10), the more force it will take to initially get the body moving when nearly stationary. This
+             value is multiplied with the friction property to make it easier to change friction and maintain an
+             sappropriate amount of static friction.
+             */
+
+            /*
+             FRICTION
+             A Number that defines the friction of the body. The value is always positive and is in the range (0, 1). A
+             value of 0 means that the body may slide indefinitely. A value of 1 means the body may come to a stop
+             almost instantly after a force is applied.
+             The effects of the value may be non-linear. High values may be unstable depending on the body. The engine
+             uses a Coulomb friction model including static and kinetic friction. Note that collision response is based
+             on pairs of bodies, and that friction values are combined with the following formula:
+            /*
+             RESTITUTION
+             A Number that defines the restitution (elasticity) of the body. The value is always positive and is in the
+             range (0, 1). A value of 0 means collisions may be perfectly inelastic and no bouncing may occur. A value of
+             0.8 means the body may bounce back with approximately 80% of its kinetic energy. Note that collision
+             response is based on pairs of bodies, and that restitution values are combined with the following formula:
+             */
+            /*
+             FRICTIONAIR
+             A Number that defines the air friction of the body (air resistance). A value of 0 means the body will never
+             slow as it moves through space. The higher the value, the faster a body slows when moving through space.
+             The effects of the value are non-linear.
+             */
+
+            return Bodies.polygon(x, y, Math.round(Common.random(5, 8)), Common.random(40, 60), { friction: 1, restitution: 0.8, frictionStatic: 1 });
         });
 
         World.add(_world, _stack);
@@ -163,7 +202,7 @@
         if(_stack){
             for (var i = 0; i < _stack.length; i++){
                 var theBody = _stack[i];
-                Body.applyForce(theBody, { x: 0, y: 0 }, {x: x, y: y});
+                Body.applyForce(theBody, { x: 0, y: 0 }, {x: (x*0.1)^2, y: (y*0.1)^2});
             }
 
         }
@@ -185,32 +224,7 @@
             } else if (_fullscreenElement.webkitRequestFullscreen) {
                 _fullscreenElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
             }
-
-            // Note that the API is still vendor-prefixed in browsers implementing it
-            //window.addEventListener("fullscreenchange", function( event ) {
-
-
-
-
-
-            //});
-        }else{
-            /*setTimeout(function(){
-                screen.lockOrientationUniversal = screen.lockOrientation || screen.mozLockOrientation || screen.msLockOrientation;
-
-                // The target of the event is always the document,
-                // but it is possible to retrieve the fullscreen element through the API
-                //document.fullscreenElement;
-
-                if (screen.lockOrientationUniversal("portrait-primary")) {
-                    //alert('Locked');
-                } else {
-                    //alert('Lock failed');
-                }
-            },1000);*/
         }
-
-
     };
 
     Demo.pushCollisions = function(event) {
@@ -229,6 +243,13 @@
             var pair = pairs[i];
             if (pair.bodyA.label !== 'world-bounds'){
                 _bodiesToBeMovedNextFrame.push(pair.bodyA);
+                //console.log(pair.collision.axisBody.angularVelocity);
+
+                if(pair.collision.axisBody.angularVelocity > 0.01){
+                    Demo.playRandomSound(pair.collision.axisBody.angularVelocity*100);
+                }
+
+
             }
 
             if(pair.bodyB.label !== 'world-bounds'){
@@ -252,6 +273,35 @@
         World.addBody(_world, Bodies.rectangle(-offset, _sceneHeight * 0.5, 50.5, _sceneHeight + 0.5, { isStatic: true, label: "world-bounds" }));
 
 
+
+    };
+
+    Demo.playRandomSound = function(vol) {
+
+        var rand = Math.floor(Math.random() * (5 - 1 + 1)) + 1;
+
+        switch(rand){
+            case 1:
+                _sound.volume(vol,'clink1');
+                _sound.play('clink1');
+                break;
+            case 2:
+                _sound.volume(vol,'clink2');
+                _sound.play('clink2');
+                break;
+            case 3:
+                _sound.volume(vol,'clink3');
+                _sound.play('clink3');
+                break;
+            case 4:
+                _sound.volume(vol,'clink4');
+                _sound.play('clink4');
+                break;
+            case 5:
+                _sound.volume(vol,'clink5');
+                _sound.play('clink5');
+                break;
+        }
 
     };
 
