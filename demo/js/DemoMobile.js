@@ -202,7 +202,7 @@
         if(_stack){
             for (var i = 0; i < _stack.length; i++){
                 var theBody = _stack[i];
-                Body.applyForce(theBody, { x: 0, y: 0 }, {x: (x*0.1)^2, y: (y*0.1)^2});
+                Body.applyForce(theBody, { x: 0, y: 0 }, {x: x, y: y});
             }
 
         }
